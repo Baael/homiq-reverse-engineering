@@ -1,68 +1,54 @@
-# AI Knowledge Base (dla agentów)
+# Jak użyć AI do ratowania Homiq (dla “zielonych”)
 
-Ten dokument jest dedykowany agentom AI i automatyzacji pomocy. Dla ludzi polecamy playbooki i strony referencyjne.
+Ta strona jest dla Ciebie, jeśli chcesz użyć ChatGPT/Claude/innego AI do diagnozy lub integracji Homiq i **nie wiesz co mu wkleić**, żeby nie zgadywał.
 
-Źródło w repo: `{{REPO_URL}}/blob/{{DEFAULT_BRANCH}}/docs/AI_AGENT_KNOWLEDGE.md`
+## TL;DR (co zrobić)
 
-## Jak używać tej bazy z różnymi agentami
+1. Otwórz [Playbook: Napraw teraz](Playbook-Napraw-Teraz) i rób kroki po kolei.
+2. Po każdym kroku wklej do AI **wynik komendy** (albo 5–20 linii z sniffera).
+3. AI ma Ci powiedzieć: **co to znaczy** i **jaki jest następny krok**.
 
-Poniżej są proste “tryby pracy” — wybierz ten, który pasuje do Twojego agenta.
+## Bezpieczeństwo (ważne)
 
-### 1) Agent chatowy (tylko rozmowa, bez uruchamiania komend)
+- Jeśli coś **iskrzy / śmierdzi spalenizną / cyka / miga** → przerwij i zobacz: [Awarie i utrzymanie](Field-Failures-and-Maintenance).
+- Nie wklejaj do AI haseł, tokenów, publicznych adresów jeśli nie chcesz (zamazuj).
 
-Cel: szybko doprowadzić człowieka do testów i wniosków, bez lania wody.
+## Co wkleić do AI (minimum danych)
 
-- **Najpierw** kieruj do: [Playbook: Napraw teraz](Playbook-Napraw-Teraz)
-- **Zbieraj minimum danych** (patrz: “Dane wejściowe” poniżej)
-- **Dawaj jednoznaczne kroki** (“uruchom to, wklej wynik”) + interpretację
+AI działa dobrze, jeśli dostanie fakty. Wklej:
 
-### 2) Agent “coding/ops” (może uruchamiać komendy / edytować config)
+- **MOXA_IP** (jeśli nie znasz: [Moxa 101](Moxa-101) / [Dostęp do Moxy](Moxa-Access))
+- wynik: `nc -zv <MOXA_IP> 4001`
+- fragment z `homiq_sniff.py` (5–20 linii), czy jest dużo `CRC=BAD`
+- jeśli wysyłasz komendę: wynik `homiq_send.py` (czy dostałeś ACK)
+- napisz jedno zdanie: **co chcesz osiągnąć** (naprawa / sterowanie dziś / integracja HA)
 
-Cel: wykonać diagnostykę i przygotować rozwiązanie (Node-RED / HA / własny gateway).
+## Gotowe prompty do skopiowania
 
-- do diagnozy używaj: [Toolbox CLI](Toolbox-CLI) (`homiq_sniff.py`, `homiq_doctor.py`, `homiq_send.py`)
-- do odtworzenia sterowania: [Playbook: Przywróć sterowanie dziś](Playbook-Przywroc-Sterowanie)
-- do Moxy: [Moxa 101](Moxa-101) + [Zasoby](Zasoby)
+### Prompt: awaria / “nie działa”
 
-### 3) Agent integracyjny (Home Assistant / automatyzacje)
+Skopiuj to do AI:
 
-Cel: wyciągnąć “contract” protokołu i mapowanie encji.
+> Prowadź mnie krok po kroku wg playbooka Homiq. Najpierw bezpieczeństwo, potem: ping Moxy, port 4001, czy lecą ramki, CRC, ACK. Po każdym kroku powiedz co oznacza wynik i co robić dalej.
+> Moje dane:
+> - MOXA_IP: …
+> - `nc -zv` wynik: …
+> - sniffer (kilka linii): …
 
-- start: [Integracja Home Assistant (cookbook)](HA-Integration)
-- referencja: [Protokół](Protocol)
-- edge-case’y i warianty CRC: [Reverse engineering](Reverse-Engineering)
+### Prompt: “chcę przywrócić sterowanie dziś”
 
-### 4) Agent “field support” (awaria u klienta / bezpieczeństwo)
+> Chcę przywrócić sterowanie Homiq dziś (Toolbox/Node-RED). Poprowadź mnie wg playbooka “Przywróć sterowanie dziś” i powiedz jak uniknąć retry storm (ACK) oraz jak sprawdzić CRC.
+> Moje dane: MOXA_IP: …, czy lecą ramki: tak/nie, CRC: OK/BAD
 
-Cel: minimalizować ryzyko i przywrócić krytyczne funkcje.
+### Prompt: integracja Home Assistant
 
-- zawsze zaczynaj od sekcji bezpieczeństwa: [Playbook: Napraw teraz](Playbook-Napraw-Teraz)
-- jeśli są objawy elektryczne (cykanie, miganie, zapach spalenizny) → [Awarie i utrzymanie](Field-Failures-and-Maintenance)
+> Chcę napisać integrację Home Assistant do Homiq. Podaj minimalny “contract”: parser strumienia TCP, ACK, CRC, retry, dedupe, mapowanie encji (I.* / O.* / UD). Wypisz też 3 pułapki (S.0, PKT reset, ucięte ramki) i jak je obsłużyć.
 
-## Dane wejściowe (co agent powinien zebrać zanim zacznie “zgadywać”)
+## “A co z tym linkiem do AI_AGENT_KNOWLEDGE?”
 
-Poproś użytkownika o:
+To jest **dłuższa baza wiedzy** w repo, która pomaga AI ogarnąć kontekst:
 
-- **MOXA_IP** (jeśli nie ma: scenariusze w [Moxa 101](Moxa-101))
-- **czy port działa**: wynik `nc -zv <MOXA_IP> 4001`
-- **czy lecą ramki**: fragment outputu sniffera (5–20 linii)
-- **CRC OK/BAD**: czy jest dużo `CRC=BAD`
-- **przykładowe ramki**: 2–3 sztuki (np. `I.*`, ACK do `O.*`, ewentualnie `UD`)
-- **co jest celem**: “naprawa”, “sterowanie dziś”, “integracja HA”
+- `{{REPO_URL}}/blob/{{DEFAULT_BRANCH}}/docs/AI_AGENT_KNOWLEDGE.md`
 
-## Gotowe prompty (do skopiowania)
-
-### Diagnostyka (awaria / Marcin)
-
-“Prowadź mnie krok-po-kroku wg playbooka. Najpierw bezpieczeństwo, potem: ping Moxy, port 4001, czy lecą ramki, CRC, ACK. Po każdym kroku powiedz co oznacza wynik i co robić dalej.”
-
-### Integracja HA (dev)
-
-“Potrzebuję minimalnego kontraktu integracji: parser strumienia, ACK, CRC, retry, dedupe, mapowanie encji. Podaj też 3 najczęstsze pułapki (S.0, PKT reset, ucięte ramki).”
-
-Najważniejsze skróty:
-
-- jeśli “coś nie działa” → [Playbook: Napraw teraz](Playbook-Napraw-Teraz)
-- jeśli interesuje Cię protokół → [Protokół](Protocol) / [Reverse engineering](Reverse-Engineering)
-- jeśli interesuje Cię Moxa → [Moxa 101](Moxa-101)
+Zielony użytkownik zwykle nie musi tego czytać — wystarczy, że poda AI ten link, jeśli AI prosi o więcej szczegółów.
 
