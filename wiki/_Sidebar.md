@@ -14,9 +14,23 @@
 - [Słownik](Slownik)
 - [Zasoby (manuale/sterowniki/linki)](Zasoby)
 
+## Docs (pełna treść z repo)
+
+- [Spis docs](Docs)
+- [01 — Szybki start](Docs-01-Szybki-Start)
+- [02 — Architektura](Docs-02-Architektura)
+- [03 — Dostęp do Moxy](Docs-03-Dostep-Do-Moxy)
+- [04 — Połączenie / transport](Docs-04-Polaczenie)
+- [05 — Odzyskiwanie backupu](Docs-05-Odzyskiwanie-Backupu)
+- [06 — Node-RED](Docs-06-Node-RED)
+- [07 — Rozwiązywanie problemów](Docs-07-Rozwiazywanie-Problemow)
+- [08 — Protokół](Docs-08-Protokol)
+- [09 — FAQ protokołu](Docs-09-FAQ-Protokol)
+- [10 — Awarie i utrzymanie](Docs-10-Awarie-I-Utrzymanie)
+- [AI Knowledge Base](Docs-AI-Knowledge-Base)
+
 ## Referencja
 
-- [Docs (pełna treść)](Docs)
 - [Szybki start](Quick-Start)
 - [Architektura](Architecture)
 - [Dostęp do Moxy](Moxa-Access)
