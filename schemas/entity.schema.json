@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "homiq:entity.schema.json",
+  "title": "Normalized entity exported from Homiq DB",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "address", "master", "name", "raw"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["module", "input", "output", "cover"],
+      "description": "High-level entity kind."
+    },
+    "module_type": {
+      "type": "string",
+      "enum": ["io"],
+      "description": "Present when kind=module."
+    },
+    "address": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Address used in protocol/DB. For I/O: MOD.N, for covers: MOD."
+    },
+    "parent": {
+      "type": "string",
+      "description": "Parent module address for MOD.N entities."
+    },
+    "master": {
+      "type": "string",
+      "description": "Master id / gateway identifier from DB (e.g. 'HQP' in node config, or m_cid in legacy DB)."
+    },
+    "serial": {
+      "type": ["string", "null"]
+    },
+    "name": {
+      "type": ["string", "null"]
+    },
+    "type": {
+      "type": ["string", "number", "null"],
+      "description": "Legacy type field (input/output type) - keep as-is."
+    },
+    "state": {
+      "type": ["string", "number", "null"]
+    },
+    "logicalstate": {
+      "type": ["string", "null"]
+    },
+    "timeout_s": {
+      "type": ["number", "string", "null"],
+      "description": "Timeout/sleep time in seconds (legacy o_sleep/m_sleep)."
+    },
+    "active": {
+      "type": ["boolean", "string", "number", "null"]
+    },
+    "protocol": {
+      "type": ["object", "null"],
+      "description": "Optional protocol hints for HA mapping.",
+      "additionalProperties": true
+    },
+    "raw": {
+      "type": "object",
+      "description": "Original DB row (columns preserved).",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "cover" } } },
+      "then": { "required": ["protocol"] }
+    }
+  ]
+}
+

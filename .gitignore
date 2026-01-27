@@ -1,0 +1,22 @@
+# Backupy i duże artefakty (trzymamy poza gitem)
+/backups/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenv
+.venv/
+venv/
+
+# Typowe outputy narzędzi (na wypadek gdyby ktoś wrzucił je obok backupów)
+/tools/**/out*/
+/tools/**/output*/
+/toolbox/**/out*/
+/toolbox/**/output*/
+/extracted*/
+/export*/
+

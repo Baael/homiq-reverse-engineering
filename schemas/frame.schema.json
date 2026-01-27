@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "homiq:frame.schema.json",
+  "title": "Homiq protocol frame",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cmd", "val", "src", "dst", "pkt", "top", "crc"],
+  "properties": {
+    "cmd": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Command, e.g. O.3, I.7, UD, GS, ID.0"
+    },
+    "val": {
+      "type": "string",
+      "description": "Command value/parameter as ASCII"
+    },
+    "src": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Source address (module address or '0')"
+    },
+    "dst": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Destination address (module address, 'yy', or sometimes serial depending on cmd)"
+    },
+    "pkt": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "description": "Packet counter as ASCII decimal"
+    },
+    "top": {
+      "type": "string",
+      "enum": ["s", "a"],
+      "description": "Frame type: 's' requires ACK, 'a' is ACK"
+    },
+    "crc": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "description": "CRC8 as ASCII decimal (implementation-dependent variant; often CRC-8/Maxim(1-Wire) equivalent)"
+    }
+  }
+}
+

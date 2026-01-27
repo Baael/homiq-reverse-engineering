@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "homiq:export.schema.json",
+  "title": "Homiq DB export bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "entities", "tables"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "format_version", "generated_at", "source", "counts"],
+      "properties": {
+        "format": { "type": "string", "const": "homiq-db-export" },
+        "format_version": { "type": "integer", "minimum": 1 },
+        "generated_at": { "type": "string" },
+        "source": { "type": "string" },
+        "counts": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "entity.schema.json" }
+    },
+    "tables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "object", "additionalProperties": true }
+      }
+    }
+  }
+}
+

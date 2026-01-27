@@ -1,0 +1,75 @@
+[
+  {
+    "id": "f1a1c0c1a0b0c0d0",
+    "type": "tab",
+    "label": "Homiq TCP (frames + ACK)",
+    "disabled": false,
+    "info": "Example Node-RED flow: TCP in/out with Homiq frame parsing and auto-ACK."
+  },
+  {
+    "id": "tcp_in_homiq",
+    "type": "tcp in",
+    "z": "f1a1c0c1a0b0c0d0",
+    "name": "TCP IN (Moxa)",
+    "server": "client",
+    "host": "10.10.20.201",
+    "port": "4001",
+    "datamode": "stream",
+    "datatype": "buffer",
+    "newline": "",
+    "topic": "",
+    "base64": false,
+    "tls": "",
+    "x": 170,
+    "y": 120,
+    "wires": [["fn_parse_frames"]]
+  },
+  {
+    "id": "tcp_out_homiq",
+    "type": "tcp out",
+    "z": "f1a1c0c1a0b0c0d0",
+    "name": "TCP OUT (Moxa)",
+    "host": "10.10.20.201",
+    "port": "4001",
+    "beserver": "client",
+    "base64": false,
+    "end": false,
+    "tls": "",
+    "x": 820,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "fn_parse_frames",
+    "type": "function",
+    "z": "f1a1c0c1a0b0c0d0",
+    "name": "Parse <;...;> frames",
+    "func": "// Streaming parser: keep buffer in context\n// Emits msg for each decoded frame:\n//   msg.frame = {cmd,val,src,dst,pkt,top,crc}\n//   msg.topic = `homiq/${src}/${cmd}`\n// Also emits ACK bytes to TCP OUT for TOP='s'.\n//\n// CRC is computed using the 'crc' npm module, same as many community flows:\n//   packet.push(crc.crc81wire(packet.join('')))\n\nlet buf = context.get('buf') || '';\nconst chunk = msg.payload; // Buffer\nbuf += chunk.toString('ascii');\n\nconst outMsgs = [];\nconst ackMsgs = [];\n\nconst createAnswer = ({ cmd, value, dst, serial }) => {\n  const packet = [cmd, value, '0', dst, serial, 'a'];\n  packet.push(crc.crc81wire(packet.join('')));\n  return `<;${packet.join(';')};>\\r\\n`;\n};\n\nwhile (true) {\n  const begin = buf.indexOf('<;');\n  if (begin < 0) break;\n  const end = buf.indexOf(';>', begin);\n  if (end < 0) break;\n  const raw = buf.slice(begin, end + 2);\n  buf = buf.slice(end + 2);\n\n  const t = raw.trim();\n  if (!t.startsWith('<;') || !t.endsWith(';>')) continue;\n  const body = t.slice(2, -2);\n  const parts = body.split(';');\n  if (parts.length < 7) continue;\n\n  const [cmd, val, src, dst, pkt, top, crcField] = parts;\n  const frame = { cmd, val, src, dst, pkt, top, crc: crcField };\n\n  outMsgs.push({ payload: raw, frame, topic: `homiq/${src}/${cmd}` });\n\n  if (top === 's') {\n    const ack = createAnswer({ cmd, value: val, dst: src, serial: pkt });\n    ackMsgs.push({ payload: Buffer.from(ack, 'ascii') });\n  }\n}\n\ncontext.set('buf', buf);\n\nreturn [outMsgs, ackMsgs];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [\n      { \"var\": \"crc\", \"module\": \"crc\" }\n    ],
+    "x": 430,
+    "y": 120,
+    "wires": [["dbg_frames"], ["tcp_out_homiq"]]
+  },
+  {
+    "id": "dbg_frames",
+    "type": "debug",
+    "z": "f1a1c0c1a0b0c0d0",
+    "name": "Frames",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "frame",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 670,
+    "y": 100,
+    "wires": []
+  }
+]
+
