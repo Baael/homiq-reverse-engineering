@@ -26,6 +26,7 @@ Jeśli chcesz tylko sprawdzić, czy instalacja żyje (czy lecą ramki):
 
 ## Referencja (głębiej)
 
+- [Docs (pełna treść)](Docs)
 - [Architektura](Architecture)
 - [Połączenie (TCP/serial/npreal)](Connection-Transport)
 - [Toolbox CLI](Toolbox-CLI)
