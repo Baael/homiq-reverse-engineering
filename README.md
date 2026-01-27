@@ -100,6 +100,7 @@ Import: [`toolbox/nodered/flows_homiq_tcp.json`](toolbox/nodered/flows_homiq_tcp
 ```
 Reverse engineering/
 ├── docs/           ← dokumentacja (mniejsze pliki)
+├── wiki/           ← źródła GitHub Wiki (strony .md)
 ├── toolbox/        ← narzędzia CLI + Node-RED
 ├── tools/          ← extractory DB→JSON
 ├── schemas/        ← JSON Schema
@@ -108,6 +109,16 @@ Reverse engineering/
 ```
 
 ---
+
+## Wiki (GitHub)
+
+W repo trzymamy źródła wiki w `wiki/` (strony + `_Sidebar.md`/`_Footer.md`).
+
+Publikacja do GitHub Wiki (osobne repo `*.wiki.git`):
+
+```bash
+./scripts/publish_wiki.sh
+```
 
 ## Pomoc
 
