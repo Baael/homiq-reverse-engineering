@@ -10,6 +10,12 @@
 - Doprecyzowano retry/timeouty, deduplikację i wyjątki (`PG`, `HB`, `S.0`, `ID.0`).
 - Dodano sekcję dokumentacji technicznej (TCP + legacy kontekst + panel admina).
 - Dodano stronę narzędzia: `Emulator`.
+- Dodano nowe strony wiki (wersje pełniejsze):
+  - `Docs-11-Protokol-TCP-Tabela-Komend`
+  - `Docs-11-TCP-Integrator-Pseudokod`
+  - `Docs-11-TCP-Uzytkownik-Pelny-Poradnik`
+  - `Docs-11-Panel-Admin-Pelny`
+  - `Docs-11-Legacy-Architektura-Pelna`
 - Dodano disclaimer w wiki (Home + stopka).
 
 ### Dokumentacja (docs/)

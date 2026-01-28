@@ -123,7 +123,7 @@ TX: <;I.3;1;0;0H;42;a;87;>
 - Jeśli brak ACK w krótkim oknie → powtórz (retry)
   - typowo ~`126ms` dla zwykłych komend
   - typowo ~`500ms` dla komend konfiguracyjnych (serwisowych)
-- Max **15 prób** (w nowych materiałach; `HB` bywa wyjątkiem bez retry)
+- Max **15 prób** (`HB` bywa wyjątkiem bez retry)
 - `ID` trzymaj stabilnie dla retry tej samej komendy (inkrementuj dopiero przy kolejnej nowej komendzie do `(DST, CMD)`)
 
 ---
