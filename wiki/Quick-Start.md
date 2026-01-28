@@ -2,6 +2,8 @@
 
 > Zanim zaczniesz cokolwiek naprawiać, musisz wiedzieć jedno: **czy system w ogóle żyje?**
 
+**Wersja pełna (krok po kroku):** [01 — Szybki start](Docs-01-Szybki-Start)
+
 ## O co chodzi?
 
 System Homiq składa się z modułów, które komunikują się przez magistralę RS485. Ty widzisz ją zwykle przez **Moxę** (RS485 → TCP/IP). Jeśli Moxa działa i moduły “gadają”, zobaczysz strumień ramek ASCII w formacie `<;...;>`.

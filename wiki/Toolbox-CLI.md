@@ -66,6 +66,6 @@ python3 cli/homiq_doctor.py --tcp <IP>:4001 --seconds 30 --out /tmp/homiq-doctor
 
 ## Uwagi bezpieczeństwa
 
-- **ACK dla `TOP=s` jest bezpieczny** i zwykle konieczny, żeby nie wywołać stormu retry.
+- **ACK dla `TYPE=s` jest bezpieczny** i zwykle konieczny, żeby nie wywołać stormu retry.
 - “Aktywne discovery” (`GS/LI/ID.0`) bywa firmware-zależne — używaj tylko jeśli wiesz co robisz.
 

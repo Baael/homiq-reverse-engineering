@@ -74,6 +74,6 @@ Nie masz backupu:
 
 ## Najczęstsze skróty
 
-- **S.0 spam / discovery**: zawsze ACK na `TOP=s`, discovery rób pasywnie → [Protocol-FAQ](Protocol-FAQ)
+- **S.0 spam / discovery**: zawsze ACK na `TYPE=s`, discovery rób pasywnie → [Protocol-FAQ](Protocol-FAQ)
 - **npreal tnie ramki**: wróć na TCP / Force Transmit = 0ms → [Moxa 101](Moxa-101)
 

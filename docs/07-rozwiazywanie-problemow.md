@@ -50,7 +50,7 @@ telnet <IP> 4001
 
 **Objaw:** Wysyłasz komendę, ale moduł nie odpowiada. Albo widzisz, że moduł wysyła tę samą wiadomość dziesiątki razy.
 
-**Co to oznacza:** W protokole Homiq, gdy ktoś wyśle wiadomość z `TOP=s`, oczekuje potwierdzenia (ACK). Jeśli go nie dostanie w ciągu ~1 sekundy, próbuje ponownie. I ponownie. I ponownie. To jest "retry storm" — zalew powtórzonych wiadomości.
+**Co to oznacza:** W protokole Homiq, gdy ktoś wyśle wiadomość z `TYPE=s`, oczekuje potwierdzenia (ACK). Jeśli go nie dostanie w krótkim oknie, próbuje ponownie. To jest "retry storm" — zalew powtórzonych wiadomości.
 
 **Możliwe przyczyny:**
 1. **Moduł nie działa** — wyłączony, uszkodzony, zły adres
@@ -59,7 +59,7 @@ telnet <IP> 4001
 
 **Co sprawdzić:**
 - Czy moduł w ogóle wysyła? (powinien być widoczny w snifferze)
-- Czy Twój ACK ma poprawną strukturę? (zamienione SRC↔DST, TOP=a, przeliczone CRC)
+- Czy Twój ACK ma poprawną strukturę? (zamienione SRC↔DST, TYPE=a, przeliczone CRC)
 - Czy stary serwer Homiq nadal działa? (jeśli tak — wyłącz go, może blokować ACK)
 
 ---
@@ -78,15 +78,15 @@ telnet <IP> 4001
 
 ---
 
-## Reset licznika PKT
+## Reset licznika ID (dawniej: PKT)
 
 **Objaw:** ACK nie pasują mimo poprawnego CRC.
 
 **Wyjaśnienie:**
-Licznik `PKT` jest per `(DST, CMD)` i modulo 512. Po restarcie liczniki się resetują.
+Licznik `ID` jest per `(DST, CMD)` i modulo 512. Po restarcie liczniki się resetują.
 
 **Rozwiązanie:**
-- Pamiętaj PKT per `(dst, cmd)`, inkrementuj po każdym wysłaniu
+- Pamiętaj ID per `(dst, cmd)`, inkrementuj po każdym wysłaniu
 - Kilka pierwszych ACK po restarcie może nie pasować (normalne)
 
 ---

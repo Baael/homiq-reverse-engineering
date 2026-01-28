@@ -9,7 +9,7 @@ Jeśli chcesz tylko uruchomić sterowanie, zacznij od [06-node-red.md](06-node-r
 ## Format ramki
 
 ```
-<;CMD;VAL;SRC;DST;PKT;TOP;CRC;>\r\n
+<;CMD;VAL;SRC;DST;ID;TYPE;CRC;>\r\n
 ```
 
 | Pole | Opis | Przykłady |
@@ -18,21 +18,21 @@ Jeśli chcesz tylko uruchomić sterowanie, zacznij od [06-node-red.md](06-node-r
 | VAL | Wartość | `0`, `1`, `u`, `d`, `s` |
 | SRC | Nadawca | `0H`, `05`, `0` (kontroler) |
 | DST | Odbiorca | `0H`, `yy` (broadcast) |
-| PKT | Nr pakietu | `1`–`511` (modulo 512) |
-| TOP | Typ | `s` (send), `a` (ACK) |
-| CRC | Suma | CRC-8/Maxim (dziesiętnie) |
+| ID | Nr sekwencyjny | `1`–`511` (modulo 512) |
+| TYPE | Typ | `s` (send), `a` (ACK) |
+| CRC | Suma | dziesiętne ASCII (liczone jak `crc81wire`) |
 
 ---
 
 ## CRC-8
 
-**Algorytm:** CRC-8/Maxim (1-Wire), poly `0x18`, init `0x00`
+W tej dokumentacji przyjmujemy: **CRC = `crc81wire(payload)`**.
 
-**Wejście:** `CMD + VAL + SRC + DST + PKT + TOP` (konkatenacja ASCII)
+- payload = `CMD+VAL+SRC+DST+ID+TYPE` (konkatenacja bez separatorów)
 
 **Python:**
 ```python
-def crc8_maxim(data: str) -> int:
+def crc81wire(data: str) -> int:
     crc = 0
     for byte in data.encode('ascii'):
         crc ^= byte
@@ -54,10 +54,10 @@ const checksum = crc.crc81wire(payload);
 
 ## ACK
 
-Gdy otrzymasz ramkę z `TOP=s`, odpowiedz ACK:
+Gdy otrzymasz ramkę z `TYPE=s`, odpowiedz ACK:
 
 1. Zamień `SRC` ↔ `DST`
-2. Ustaw `TOP=a`
+2. Ustaw `TYPE=a`
 3. Przelicz CRC
 4. Wyślij
 
@@ -106,9 +106,11 @@ TX: <;I.3;1;0;0H;42;a;87;>
 
 ## Retry
 
-- Jeśli brak ACK w ~1s → powtórz
-- Max 5 prób
-- Inkrementuj PKT przy każdej próbie
+- Jeśli brak ACK w krótkim oknie → retry
+  - typowo ~`126ms` dla zwykłych komend
+  - typowo ~`500ms` dla komend konfiguracyjnych
+- Max **15 prób** (`HB` bywa wyjątkiem bez retry)
+- `ID` trzymaj stały dla retry tej samej komendy; inkrementuj dopiero przy kolejnej nowej komendzie do `(DST, CMD)`
 
 ---
 

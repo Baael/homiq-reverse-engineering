@@ -1,0 +1,23 @@
+{
+  "name": "homiq-emulator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Homiq Master+Moxa TCP Emulator - development/diagnostic tool",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w shared && npm run build -w backend && npm run build -w frontend",
+    "start": "npm run start -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

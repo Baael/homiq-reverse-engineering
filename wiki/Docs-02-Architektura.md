@@ -34,7 +34,7 @@ Każda "rozmowa" to **ramka** — krótka wiadomość tekstowa w formacie `<;...
 |---------|------|
 | **Transport** | TCP do Moxy (port 4001) lub serial |
 | **Protokół** | Ramki ASCII `<;...;>` z CRC |
-| **Logika** | ACK, retry, licznik PKT |
+| **Logika** | ACK, retry, licznik ID (dawniej: PKT) |
 | **Aplikacja** | Node-RED / własny gateway |
 
 ## Protokół w skrócie
@@ -42,7 +42,7 @@ Każda "rozmowa" to **ramka** — krótka wiadomość tekstowa w formacie `<;...
 Każda ramka wygląda tak:
 
 ```text
-<;CMD;VAL;SRC;DST;PKT;TOP;CRC;>\r\n
+<;CMD;VAL;SRC;DST;ID;TYPE;CRC;>\r\n
 ```
 
 Brzmi skomplikowanie? Rozbijmy to na części:
@@ -53,15 +53,15 @@ Brzmi skomplikowanie? Rozbijmy to na części:
 | VAL | **Jaka wartość?** | `1` = włącz, `0` = wyłącz, `u` = góra |
 | SRC | **Kto mówi?** (nadawca) | `0H` = moduł o adresie 0H |
 | DST | **Do kogo?** (odbiorca) | `0H` = do modułu 0H, `yy` = do wszystkich |
-| PKT | **Numer wiadomości** | `42` — żeby dopasować odpowiedź |
-| TOP | **Typ wiadomości** | `s` = proszę o odpowiedź, `a` = to jest odpowiedź |
-| CRC | **Suma kontrolna** | Żeby wykryć błędy transmisji |
+| ID | **Numer wiadomości** | `42` — żeby dopasować odpowiedź |
+| TYPE | **Typ wiadomości** | `s` = proszę o odpowiedź, `a` = to jest odpowiedź |
+| CRC | **Suma kontrolna** | dziesiętne ASCII, liczone jak `crc81wire` |
 
 ## Najważniejsze zasady
 
 Żeby system działał, musisz przestrzegać trzech zasad:
 
-1. **Zawsze odpowiadaj na `TOP=s`** — Gdy moduł wysyła wiadomość z `s` na końcu, oczekuje potwierdzenia (ACK). Jeśli go nie dostanie, będzie próbował wysłać tę samą wiadomość znowu i znowu (tzw. "retry storm").
+1. **Zawsze odpowiadaj na `TYPE=s`** — Gdy moduł wysyła wiadomość z `s` na końcu, oczekuje potwierdzenia (ACK). Jeśli go nie dostanie, będzie próbował wysłać tę samą wiadomość znowu i znowu (tzw. "retry storm").
 2. **ACK to prawie ta sama ramka** — Bierzesz odebraną ramkę, zamieniasz SRC z DST (nadawca staje się odbiorcą), zmieniasz `s` na `a`, przeliczasz CRC, wysyłasz.
 3. **CRC musi się zgadzać** — Suma kontrolna jest liczona ze wszystkich pól (bez `<;` i `;>`). Jeśli CRC się nie zgadza, wiadomość jest ignorowana.
 

@@ -1,6 +1,7 @@
 ## Homiq Rescue
 
 - [Home](Home)
+- [Mapa wiki (gdzie co jest)](Mapa)
 
 ## Playbooki (najkrótsza droga)
 
@@ -9,41 +10,48 @@
 - [Moxa 101](Moxa-101)
 - [Integracja Home Assistant (cookbook)](HA-Integration)
 
-## Pomoc i pojęcia
+## Skróty (praktyczne wejścia)
 
-- [Słownik](Slownik)
-- [Zasoby (manuale/sterowniki/linki)](Zasoby)
+- [Szybki start (5 minut)](Quick-Start) → (pełne) [01 — Szybki start](Docs-01-Szybki-Start)
+- [Dostęp do Moxy](Moxa-Access) → (pełne) [03 — Dostęp do Moxy](Docs-03-Dostep-Do-Moxy)
+- [Node-RED](Node-RED) → (pełne) [06 — Node-RED](Docs-06-Node-RED)
+- [Rozwiązywanie problemów](Troubleshooting) → (pełne) [07 — Rozwiązywanie problemów](Docs-07-Rozwiazywanie-Problemow)
+- [Protokół](Protocol) → (pełne) [08 — Protokół](Docs-08-Protokol)
+- [Konfiguracja połączenia](Connection-Transport)
+- [Backup → odzyskanie konfiguracji](Backup-Recovery)
 
-## Docs (pełna treść z repo)
+## Docs (pełne przewodniki)
 
-- [Spis docs](Docs)
+- [Docs (spis)](Docs)
 - [01 — Szybki start](Docs-01-Szybki-Start)
-- [02 — Architektura](Docs-02-Architektura)
 - [03 — Dostęp do Moxy](Docs-03-Dostep-Do-Moxy)
 - [04 — Połączenie / transport](Docs-04-Polaczenie)
-- [05 — Odzyskiwanie backupu](Docs-05-Odzyskiwanie-Backupu)
 - [06 — Node-RED](Docs-06-Node-RED)
 - [07 — Rozwiązywanie problemów](Docs-07-Rozwiazywanie-Problemow)
 - [08 — Protokół](Docs-08-Protokol)
+- [08a — Protokół: Ramki (RX/TX)](Docs-08-Protokol-Ramki)
+- [08b — Protokół: Komendy](Docs-08-Protokol-Komendy)
+- [08c — Protokół: Discovery](Docs-08-Protokol-Discovery)
 - [09 — FAQ protokołu](Docs-09-FAQ-Protokol)
 - [10 — Awarie i utrzymanie](Docs-10-Awarie-I-Utrzymanie)
-- [AI Knowledge Base](Docs-AI-Knowledge-Base)
+- [11 — Dokumentacja techniczna](Docs-11-Dokumentacja-Techniczna)
+  - [11 — Protokół TCP (spec)](Docs-11-Protokol-TCP)
+  - [11 — TCP: implementacja (integrator)](Docs-11-TCP-Integrator)
+  - [11 — TCP: instrukcja użytkownika](Docs-11-TCP-Uzytkownik)
+  - [11 — Legacy Homiq: architektura](Docs-11-Legacy-Architektura)
+  - [11 — Panel admina](Docs-11-Panel-Admin)
 
-## Referencja
+## Referencja / pojęcia
 
-- [Szybki start](Quick-Start)
-- [Architektura](Architecture)
-- [Dostęp do Moxy](Moxa-Access)
-- [Konfiguracja połączenia](Connection-Transport)
+- [Słownik](Slownik)
+- [Zasoby (manuale/sterowniki/linki)](Zasoby)
 - [Toolbox CLI](Toolbox-CLI)
-- [Node-RED](Node-RED)
-- [Backup → odzyskanie konfiguracji](Backup-Recovery)
-- [Rozwiązywanie problemów (objawy)](Troubleshooting)
-- [Awarie i utrzymanie](Field-Failures-and-Maintenance)
-- [Protokół](Protocol)
-- [FAQ protokołu](Protocol-FAQ)
-- [Reverse engineering (deep dive)](Reverse-Engineering)
+- [Emulator](Emulator)
 - [Schemas](Schemas)
+- [Reverse engineering (deep dive)](Reverse-Engineering)
+- [AI Knowledge Base](Docs-AI-Knowledge-Base)
+- [Awarie i utrzymanie (objawy)](Field-Failures-and-Maintenance)
+- [FAQ protokołu (skrót)](Protocol-FAQ)
 
 ## Wiki
 

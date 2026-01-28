@@ -4,6 +4,8 @@ Zacznij od objawu, który najbardziej pasuje do Twojej sytuacji.
 
 > Jeśli chcesz “drzewko decyzji” od zera do rozwiązania: [Playbook: Napraw teraz](Playbook-Napraw-Teraz)
 
+**Wersja pełna (krok po kroku):** [07 — Rozwiązywanie problemów](Docs-07-Rozwiazywanie-Problemow)
+
 ## Brak ramek / tylko “śmieci”
 
 **Objaw:** sniffer nic nie pokazuje albo pokazuje nieczytelne znaki.
@@ -42,16 +44,16 @@ telnet <IP> 4001
 
 **Sprawdź:**
 
-- czy ACK ma poprawną strukturę (`SRC↔DST`, `TOP=a`, CRC)
+- czy ACK ma poprawną strukturę (`SRC↔DST`, `TYPE=a`, CRC)
 - czy nie działa jeszcze stary serwer Homiq (potrafi “gatingować” część ruchu)
 
 ## Discovery “dziwnie działa” (S.0 spam)
 
 Legacy serwer odpowiadał na `S.0` tylko dla “znanych” modułów. Stabilna integracja zwykle robi **pasywne discovery** (obserwuje `SRC` w normalnych ramkach) + zawsze wysyła ACK.
 
-## Reset licznika PKT
+## Reset licznika ID (dawniej: PKT)
 
-Po restarcie liczniki `PKT` się resetują — kilka pierwszych ACK może nie pasować. Dopasowuj ACK po `(CMD, SRC, PKT)` i utrzymuj licznik per `(dst, cmd)`.
+Po restarcie liczniki `ID` się resetują — kilka pierwszych ACK może nie pasować. Dopasowuj ACK po `(CMD, SRC, ID)` i utrzymuj licznik per `(dst, cmd)`.
 
 ## Złe parametry seriala
 

@@ -14,6 +14,16 @@ Dokumentacja jest napisana tak, żeby pomóc zarówno **początkującym** (krok 
 
 ---
 
+## Ważne (disclaimer)
+
+- Korzystasz z tego repo **na własną odpowiedzialność**.
+- Autor(zy) **nie ponoszą odpowiedzialności** za szkody, awarie, straty, błędne działanie automatyki lub konsekwencje użycia tych informacji/narzędzi.
+- Automatyka domowa często dotyka obwodów krytycznych (HVAC, pompy, bramy, zasilanie). Jeśli nie masz pewności co robisz — przełącz na tryb ręczny i/lub wezwij elektryka/serwis.
+- Ten projekt powstał, bo przy **braku wsparcia** dla tego systemu ma pomóc ludziom w trudnej sytuacji, którzy nie mogą korzystać z instalacji.
+- Duża część treści została **wygenerowana lub uporządkowana przy użyciu agentów AI** i może zawierać błędy — zawsze weryfikuj na swojej instalacji.
+
+---
+
 ## Szybki start
 
 | Krok | Co zrobić | Czas |
@@ -92,6 +102,10 @@ pip install -r requirements.txt
 ### Node-RED
 
 Import: [`toolbox/nodered/flows_homiq_tcp.json`](toolbox/nodered/flows_homiq_tcp.json)
+
+### Emulator (test bez sprzętu)
+
+Emulator jest w katalogu `emulator/` i pozwala testować integracje po TCP (`:4001`) bez fizycznej instalacji.
 
 ---
 

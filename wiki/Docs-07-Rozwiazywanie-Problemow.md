@@ -61,7 +61,7 @@ telnet <IP> 4001
 **Co sprawdzić:**
 
 - Czy moduł w ogóle wysyła? (powinien być widoczny w snifferze)
-- Czy Twój ACK ma poprawną strukturę? (zamienione SRC↔DST, TOP=a, przeliczone CRC)
+- Czy Twój ACK ma poprawną strukturę? (zamienione SRC↔DST, TYPE=a, przeliczone CRC)
 - Czy stary serwer Homiq nadal działa? (jeśli tak — wyłącz go, może blokować ACK)
 
 ---
@@ -77,15 +77,15 @@ telnet <IP> 4001
 
 ---
 
-## Reset licznika PKT
+## Reset licznika ID (dawniej: PKT)
 
 **Objaw:** ACK nie pasują mimo poprawnego CRC.
 
-**Wyjaśnienie:** Licznik `PKT` jest per `(DST, CMD)` i modulo 512. Po restarcie liczniki się resetują.
+**Wyjaśnienie:** Licznik `ID` jest per `(DST, CMD)` i modulo 512. Po restarcie liczniki się resetują.
 
 **Rozwiązanie:**
 
-- Pamiętaj PKT per `(dst, cmd)`, inkrementuj po każdym wysłaniu
+- Pamiętaj ID per `(dst, cmd)`, inkrementuj po każdym wysłaniu
 - Kilka pierwszych ACK po restarcie może nie pasować (normalne)
 
 ---

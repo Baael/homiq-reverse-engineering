@@ -17,7 +17,7 @@ Legacy serwer odpowiadał `ID.0` tylko jeśli moduł był “znany”. W praktyc
 
 ## ACK nie pasują po restarcie
 
-Licznik `PKT` resetuje się po restarcie. To normalne, że chwilę trwa “zsynchronizowanie”.
+Licznik `ID` (dawniej: `PKT`) resetuje się po restarcie. To normalne, że chwilę trwa “zsynchronizowanie”.
 
 ## Ramki są ucięte przy npreal
 

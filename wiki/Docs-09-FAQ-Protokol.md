@@ -35,7 +35,7 @@
 
 ### ACK nie pasują po restarcie
 
-**Co się dzieje:** Licznik `PKT` (numer pakietu) resetuje się po restarcie. Moduł pamięta stary licznik, więc ACK mogą nie pasować.
+**Co się dzieje:** Licznik `ID` (dawniej: `PKT`) resetuje się po restarcie. Moduł pamięta stary licznik, więc ACK mogą nie pasować.
 
 **Rozwiązanie:** To normalne zachowanie. Kilka pierwszych ramek po restarcie może nie być prawidłowo potwierdzonych. System się "zsynchronizuje" po chwili.
 

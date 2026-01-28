@@ -27,7 +27,7 @@ User's Computer ←→ Moxa NE-4110S ←→ RS485 Bus ←→ Homiq Modules
 ### Frame Format
 
 ```
-<;CMD;VAL;SRC;DST;PKT;TOP;CRC;>\r\n
+<;CMD;VAL;SRC;DST;ID;TYPE;CRC;>\r\n
 ```
 
 | Field | Description | Values |
@@ -36,17 +36,17 @@ User's Computer ←→ Moxa NE-4110S ←→ RS485 Bus ←→ Homiq Modules
 | VAL | Value | `0`/`1` (on/off), `u`/`d`/`s` (up/down/stop for blinds) |
 | SRC | Source address | Module address or `0` (controller) |
 | DST | Destination | Module address or `yy` (broadcast) |
-| PKT | Packet number | `1`-`511` (for ACK matching) |
-| TOP | Type | `s` (requires ACK), `a` (is ACK) |
-| CRC | Checksum | CRC-8/Maxim (decimal), calculated from `CMD+VAL+SRC+DST+PKT+TOP` |
+| ID | Sequence number | `1`-`511` (for ACK matching) |
+| TYPE | Type | `s` (requires ACK), `a` (is ACK) |
+| CRC | Checksum | decimal ASCII, calculated as `crc81wire(CMD+VAL+SRC+DST+ID+TYPE)` |
 
 ### CRC Calculation
 
-Algorithm: CRC-8/Maxim (1-Wire), polynomial `0x8C` (reflected), init `0x00`
+Algorithm: `crc81wire(payload)`, init `0x00`
 
 **Python:**
 ```python
-def crc8_maxim(data: str) -> int:
+def crc81wire(data: str) -> int:
     crc = 0
     for byte in data.encode('ascii'):
         crc ^= byte
@@ -63,9 +63,9 @@ const checksum = crc.crc81wire(payload);
 
 ### ACK Mechanism
 
-When receiving a frame with `TOP=s`:
+When receiving a frame with `TYPE=s`:
 1. Swap `SRC` and `DST`
-2. Change `TOP` from `s` to `a`
+2. Change `TYPE` from `s` to `a`
 3. Recalculate CRC
 4. Send immediately
 
@@ -79,9 +79,9 @@ Send ACK: <;I.3;1;0;0H;42;a;87;>
 
 ### Retry Logic
 
-- Timeout: ~1 second
-- Max attempts: 5
-- PKT counter: incremented per `(DST, CMD)`, modulo 512
+- Timeout: ~126ms (normal) / ~500ms (config)
+- Max attempts: 15 (HB is best-effort)
+- ID counter: incremented per `(DST, CMD)`, modulo 512
 
 ---
 
@@ -154,7 +154,7 @@ Location: `Reverse engineering/toolbox/nodered/flows_homiq_tcp.json`
 Features:
 - TCP connection to Moxa
 - Frame parser (`<;...;>`)
-- Auto-ACK for `TOP=s`
+- Auto-ACK for `TYPE=s`
 - Publishes to topics: `homiq/<src>/<cmd>`
 
 Requires: npm module `crc`, Node-RED setting `functionExternalModules: true`
@@ -198,7 +198,7 @@ Requires: npm module `crc`, Node-RED setting `functionExternalModules: true`
 
 **Solutions:**
 1. Check if module appears in sniffer
-2. Verify ACK structure: swapped SRC/DST, TOP=a, recalculated CRC
+2. Verify ACK structure: swapped SRC/DST, TYPE=a, recalculated CRC
 3. If legacy Homiq server running: stop it (may block ACKs)
 
 ### Problem: Cannot access Moxa
@@ -402,17 +402,17 @@ INSERT INTO macro ... VALUES ('_Roleta w dół stop','_RDE',-1,'s','D','UD');
 
 ---
 
-### FAQ-6: "PKT counter się resetuje i ACK nie pasują"
+### FAQ-6: "ID counter się resetuje i ACK nie pasują"
 
 **Przyczyna (kod Node.js, linia 55):**
 ```javascript
 counter=(counter%510)+1;
 ```
 
-**Wyjaśnienie:** Licznik PKT jest **modulo 512** (wartości 1-511). Po restarcie wraca do 1. Jeśli moduł pamięta stary licznik, ACK mogą nie pasować.
+**Wyjaśnienie:** Licznik ID jest **modulo 512** (wartości 1-511). Po restarcie wraca do 1. Jeśli moduł pamięta stary licznik, ACK mogą nie pasować.
 
 **Dla własnego rozwiązania:**
-- Dopasowuj ACK po `(CMD, SRC, PKT)`
+- Dopasowuj ACK po `(CMD, SRC, ID)`
 - Akceptuj, że kilka pierwszych ACK po restarcie może nie pasować
 
 ---
@@ -434,7 +434,7 @@ if(($tmc-$ptime)>20)
 
 ---
 
-### FAQ-8: "Moduł ignoruje zdarzenia jeśli PKT się nie zmienił"
+### FAQ-8: "Moduł ignoruje zdarzenia jeśli ID się nie zmienił"
 
 **Przyczyna (kod Perl, serial1.pl, linia 156):**
 ```perl
@@ -442,7 +442,7 @@ if(($pktlastid{"$MID\-$src\-$cmd"}{id} ne "$id")||("$cmd" eq "S.0")||("$cmd" eq 
 ```
 
 **Wyjaśnienie:** Perl daemon publikuje zdarzenie **tylko jeśli**:
-- PKT się zmienił, LUB
+- ID się zmienił, LUB
 - Komenda to `S.0`/`ID.0`, LUB
 - Minęło >20 sekund od ostatniego
 
@@ -491,7 +491,7 @@ while (true)
 
 ### CRC Variants
 
-If standard CRC-8/Maxim doesn't work, try:
+If `crc81wire(payload)` doesn't match observed traffic, try:
 - CRC-8/ATM: poly `0x07`, init `0x00`, no reflection
 - CRC-8/SAE-J1850: poly `0x1D`, init `0xFF`, xorout `0xFF`
 

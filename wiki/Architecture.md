@@ -28,13 +28,13 @@ Wyobraź sobie system Homiq jak rozmowę na jednej linii. Każdy moduł ma swój
 |---------|------|
 | **Transport** | TCP do Moxy (port 4001) lub serial |
 | **Protokół** | Ramki ASCII `<;...;>` z CRC |
-| **Logika** | ACK, retry, licznik PKT |
+| **Logika** | ACK, retry, licznik ID (dawniej: PKT) |
 | **Aplikacja** | Node-RED / własny gateway |
 
 ## Najważniejsze zasady
 
-1. **Zawsze odpowiadaj na `TOP=s`** (ACK). Bez tego urządzenia retry’ują i potrafią zalać magistralę.
-2. **ACK to prawie ta sama ramka**: zamiana `SRC↔DST`, `TOP=a`, przeliczenie CRC.
+1. **Zawsze odpowiadaj na `TYPE=s`** (ACK). Bez tego urządzenia retry’ują i potrafią zalać magistralę.
+2. **ACK to prawie ta sama ramka**: zamiana `SRC↔DST`, `TYPE=a`, przeliczenie CRC (`crc81wire`).
 3. **CRC musi się zgadzać** — inaczej ramka jest odrzucana lub logika przestaje działać.
 
 Więcej: [Protokół (szczegóły)](Protocol)

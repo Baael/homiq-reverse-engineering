@@ -6,13 +6,13 @@ To jest “deep dive” protokołu i zachowania legacy stacku, na bazie implemen
 
 - transport to **strumień TCP** (Moxa jako serial device server) — ramki mogą przychodzić pocięte / po kilka naraz
 - ramki są ASCII, delimitery: start `"<;"`, koniec `";>"` (często z `CRLF`)
-- **ACK zawsze** dla `TOP=s` (nawet jeśli nie znasz `CMD`)
-- CRC w tej instalacji jest spójne z **CRC‑8/Maxim (1‑Wire)**, a pole CRC w ramce bywa **dziesiętne ASCII**
+- **ACK zawsze** dla `TYPE=s` (nawet jeśli nie znasz `CMD`)
+- CRC w tej instalacji jest liczone jak **`crc81wire(payload)`**, a pole CRC w ramce bywa **dziesiętne ASCII**
 
 ## Format ramki
 
 ```text
-<;CMD;VAL;SRC;DST;PKT;TOP;CRC;>\r\n
+<;CMD;VAL;SRC;DST;ID;TYPE;CRC;>\r\n
 ```
 
 Skrót i przykłady: [Protokół](Protocol)

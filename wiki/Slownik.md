@@ -17,7 +17,7 @@ Magistrala (fizyczne kable), po której gadają moduły Homiq. Parametry w tej i
 Pojedyncza wiadomość w formacie:
 
 ```text
-<;CMD;VAL;SRC;DST;PKT;TOP;CRC;>
+<;CMD;VAL;SRC;DST;ID;TYPE;CRC;>
 ```
 
 Szczegóły: [Protokół](Protocol)
@@ -32,7 +32,7 @@ Szczegóły: [Protokół](Protocol)
 - `SRC` = kto wysłał (adres modułu)
 - `DST` = do kogo
 
-## TOP
+## TYPE (dawniej: TOP)
 
 Typ ramki:
 
@@ -41,15 +41,15 @@ Typ ramki:
 
 ## ACK
 
-Potwierdzenie ramki `TOP=s`. Zasada: **ACK zawsze** (żeby nie wywołać retry storm).
+Potwierdzenie ramki `TYPE=s`. Zasada: **ACK zawsze** (żeby nie wywołać retry storm).
 
-## PKT
+## ID (dawniej: PKT)
 
 Licznik wiadomości (do dopasowania ACK). W praktyce bywa liczony per `(DST, CMD)` modulo 512.
 
 ## CRC
 
-Suma kontrolna (wykrywa błędy transmisji). W tej instalacji najczęściej zgodne z CRC‑8/Maxim (1‑Wire); w ramce często zapis dziesiętny ASCII.
+Suma kontrolna (wykrywa błędy transmisji). W tej dokumentacji przyjmujemy wariant **`crc81wire(payload)`**; w ramce to często zapis dziesiętny ASCII.
 
 ## Retry storm
 

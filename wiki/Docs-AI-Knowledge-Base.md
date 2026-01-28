@@ -42,7 +42,7 @@ Skopiuj to do AI:
 
 ### Prompt: integracja Home Assistant
 
-> Chcę napisać integrację Home Assistant do Homiq. Podaj minimalny “contract”: parser strumienia TCP, ACK, CRC, retry, dedupe, mapowanie encji (I.* / O.* / UD). Wypisz też 3 pułapki (S.0, PKT reset, ucięte ramki) i jak je obsłużyć.
+> Chcę napisać integrację Home Assistant do Homiq. Podaj minimalny “contract”: parser strumienia TCP, ACK, CRC, retry, dedupe, mapowanie encji (I.* / O.* / UD). Wypisz też 3 pułapki (S.0, ID/PKT reset, ucięte ramki) i jak je obsłużyć.
 
 ## “A co z tym linkiem do AI_AGENT_KNOWLEDGE?”
 
